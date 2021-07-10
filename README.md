@@ -1,2 +1,1 @@
-# Script
- 
+print("hello bruh")
