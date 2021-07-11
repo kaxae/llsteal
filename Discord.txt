@@ -1,1 +1,0 @@
-local discord = "https://discord.gg/jt6dAPgtNd"
