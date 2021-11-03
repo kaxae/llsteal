@@ -1,0 +1,7 @@
+--Before executing the script set your spawn point to the location you wanna farm at I recommend the Baratie
+--After that add this script to autoexecute
+
+_G.speed = 5 --15 or higher = risk
+repeat wait() until game.Players.LocalPlayer.Character
+url = "https://raw.githubusercontent.com/StepBroFurious/Script/main/ChestFarmGPO.lua"
+loadstring(game:HttpGet(url))()
