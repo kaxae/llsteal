@@ -1,0 +1,10 @@
+{
+  "sql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "pass",
+    "database": "database"
+  },
+    "token": "Token Bot",
+    "prefix": "!"
+}
