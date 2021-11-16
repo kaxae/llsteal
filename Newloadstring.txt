@@ -1,0 +1,2 @@
+--Version 1.7
+loadstring(game:HttpGet("https://runed-profile.000webhostapp.com/FreeFall.lua"))()
