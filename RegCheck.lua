@@ -8,3 +8,5 @@
     print(Count)
     return Count > 30 and 30 < Count
 end
+
+local Check = CC()
