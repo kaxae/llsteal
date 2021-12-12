@@ -1,0 +1,24 @@
+local player = game.Players.LocalPlayer
+local http_request = http_request or request or (http and http.request) or (syn and syn.request);
+if not syn then
+    player:kick("Sorry Syn X only dm StepBroFurious#3333 for help :/")
+end
+
+local body = http_request({Url = 'https://httpbin.org/get'; Method = 'GET'}).Body;
+local decoded = game:GetService('HttpService'):JSONDecode(body)
+local hwid_list = {"Syn-Fingerprint"};
+local hwid = "";
+
+for i, v in next, hwid_list do
+	if decoded.headers[v] then
+		hwid = decoded.headers[v];
+		break
+	end
+end
+
+if hwid then
+	setclipboard(hwid)
+	player:kick("Hwid copied succefully, send it to the bot!")
+	else
+	player:kick("Sorry Syn X only dm StepBroFurious#3333 for help")
+end
