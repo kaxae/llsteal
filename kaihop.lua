@@ -33,6 +33,7 @@ game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 end)
 
 for i,v in pairs(workspace:GetChildren()) do
+    wait()
     if v.Name == "Kaigaku" then
         getgenv().kaigakufound = true
     end
