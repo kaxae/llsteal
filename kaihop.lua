@@ -1,4 +1,4 @@
-wait(18)
+wait(16)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
@@ -28,13 +28,12 @@ end
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport('loadstring(game:HttpGet(https://raw.githubusercontent.com/StepBroFurious/Script/main/kaihop.lua"))()')
+        syn.queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/StepBroFurious/Script/main/kaihop.lua"))()')
     end
 end)
 
 for i,v in pairs(workspace:GetChildren()) do
     if v.Name == "Kaigaku" then
-        warn("Kai found")
         getgenv().kaigakufound = true
     end
 end
@@ -61,7 +60,7 @@ if getgenv().kaigakufound ~= true then
                 getgenv().chosenmob = "Kaigaku" 
                 getgenv().MobFarm = true
                 getgenv().Itemaura = true
-            elseif val == "Hayakama" then
+            elseif val == "Hayakawa" then
                 teleport(Vector3.new(464, 759, -2016))
                 wait(1)
                 loadstring(game:HttpGet(("https://stepbrofurious.xyz/furioushub.lua"), true))()
