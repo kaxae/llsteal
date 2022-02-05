@@ -1,4 +1,4 @@
-wait(14)
+wait(18)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
@@ -34,6 +34,7 @@ end)
 
 for i,v in pairs(workspace:GetChildren()) do
     if v.Name == "Kaigaku" then
+        warn("Kai found")
         getgenv().kaigakufound = true
     end
 end
