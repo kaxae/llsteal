@@ -2,10 +2,10 @@ wait(16)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
-while wait() do
+while wait(0.01) do
     local Servers = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. game.PlaceId .. '/servers/Public?sortOrder=Asc&limit=100'))
     for i,v in pairs(Servers.data) do
-        wait()
+        wait(0.01)
         game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
     end
 end
