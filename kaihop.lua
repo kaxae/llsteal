@@ -2,10 +2,10 @@ wait(16)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
-while wait(0.01) do
+while wait() do
     local Servers = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. game.PlaceId .. '/servers/Public?sortOrder=Asc&limit=100'))
     for i,v in pairs(Servers.data) do
-        wait(0.01)
+        wait()
         game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
     end
 end
@@ -54,6 +54,10 @@ if getgenv().kaigakufound ~= true then
         if game.Workspace.Kaigaku:FindFirstChild("SpawnValue") ~= nil then
             local val = game.Workspace.Kaigaku.SpawnValue.Value
             if val == "Okuiya" then
+                for i,v in pairs(getconnections(game.Players.LocalPlayer.PlayerGui.LoadingScreen.Background.Loading.Skip.MouseButton1Click)) do
+                   v:Fire()
+                end
+                wait(3)
                 teleport(Vector3.new(-3163, 706, -1154))
                 wait(1)
                 loadstring(game:HttpGet(("https://stepbrofurious.xyz/furioushub.lua"), true))()
@@ -61,6 +65,10 @@ if getgenv().kaigakufound ~= true then
                 getgenv().MobFarm = true
                 getgenv().Itemaura = true
             elseif val == "Hayakawa" then
+                for i,v in pairs(getconnections(game.Players.LocalPlayer.PlayerGui.LoadingScreen.Background.Loading.Skip.MouseButton1Click)) do
+                   v:Fire()
+                end
+                wait(3)
                 teleport(Vector3.new(464, 759, -2016))
                 wait(1)
                 loadstring(game:HttpGet(("https://stepbrofurious.xyz/furioushub.lua"), true))()
@@ -68,6 +76,10 @@ if getgenv().kaigakufound ~= true then
                 getgenv().MobFarm = true
                 getgenv().Itemaura = true
             elseif val == "Kamakura" then
+                for i,v in pairs(getconnections(game.Players.LocalPlayer.PlayerGui.LoadingScreen.Background.Loading.Skip.MouseButton1Click)) do
+                   v:Fire()
+                end
+                wait(3)
                 teleport(Vector3.new(-2369, 1164, -1491))
                 wait(1)
                 loadstring(game:HttpGet(("https://stepbrofurious.xyz/furioushub.lua"), true))()
@@ -75,7 +87,10 @@ if getgenv().kaigakufound ~= true then
                 getgenv().MobFarm = true
                 getgenv().Itemaura = true
             elseif game.Workspace.Kaigaku:FindFirstChild("HumanoidRootPart")  ~= nil then
-                wait(1)
+                for i,v in pairs(getconnections(game.Players.LocalPlayer.PlayerGui.LoadingScreen.Background.Loading.Skip.MouseButton1Click)) do
+                   v:Fire()
+                end
+                wait(3)
                 loadstring(game:HttpGet(("https://stepbrofurious.xyz/furioushub.lua"), true))()
                 getgenv().chosenmob = "Kaigaku" 
                 getgenv().MobFarm = true
