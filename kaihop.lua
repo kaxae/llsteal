@@ -1,3 +1,4 @@
+wait(14)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
