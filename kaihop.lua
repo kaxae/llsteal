@@ -1,4 +1,4 @@
-game.Loaded:Wait()
+wait(20)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
