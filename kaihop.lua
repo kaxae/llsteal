@@ -1,4 +1,4 @@
-wait(14)
+--wait(14)
 getgenv().kaigakufound = false
 
 function ServerTeleport()
@@ -35,13 +35,21 @@ end)
 for i,v in pairs(workspace:GetChildren()) do
     if v.Name == "Kaigaku" then
         getgenv().kaigakufound = true
-        warn("Kai Found")
     end
 end
 
 if getgenv().kaigakufound ~= true then
     ServerTeleport()
     else
+    
+    spawn(function()
+        while wait() do
+            if game.Workspace:FindFirstChild("Kaigaku") == nil then
+                wait(6)
+                ServerTeleport()
+            end
+        end
+    end)
     if game.Workspace:FindFirstChild("Kaigaku") ~= nil then
         if game.Workspace.Kaigaku:FindFirstChild("SpawnValue") ~= nil then
             local val = game.Workspace.Kaigaku.SpawnValue.Value
