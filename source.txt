@@ -1,0 +1,2081 @@
+--------------------------------------------------------------------------------GRAND PIECE ONLINE--------------------------------------------------------------------
+	
+	for i, v in next, getconnections(game:GetService("Players").LocalPlayer.Idled) do
+		v:Disable();
+	end;
+	
+	--VARIABLES----------------------------------------------------------------------------------
+	
+	local toggles = {
+		inf_dash = false;
+		no_drown_dmg = false;
+		walkspeed = 16;
+		jumppower = 50;
+	};
+	
+	-- Loadstring to maintain high fps
+	loadstring([[
+		local flags = ...;
+		local isA = game.IsA;
+	
+		local mt = getrawmetatable(game);
+		local idx = mt.__index;
+		local newIdx = mt.__newindex;
+		local nc = mt.__namecall;
+	
+		setreadonly(mt, false);
+	
+		mt.__namecall = newcclosure(function(self, ...)
+			local args = {...};
+			local method = getnamecallmethod();
+	
+			if (method == "FireServer") then
+				if (self.Name == "takestam" and not flags.inf_dash) then
+					return 0;
+				elseif (self.Name == "swim" and not flags.no_drown_dmg) then
+					return;
+				end;
+			elseif (method:lower() == "kick" and not checkcaller()) then
+				return;
+			end;
+	
+			return nc(self, ...);
+		end);
+	
+		mt.__index = newcclosure(function(self, key)
+			if (isA(self, "Humanoid") and key == "WalkSpeed") then
+				return 16;
+			end;
+	
+			return idx(self, key);
+		end);
+	
+		mt.__newindex = newcclosure(function(self, key, value)
+			if (isA(self, "Humanoid") and key == "WalkSpeed" and not checkcaller()) then
+				value = flags.walkspeed;
+			end;
+	
+			return newIdx(self, key, value);
+		end);
+	
+		setreadonly(mt, true);
+	]])(toggles);
+	
+	player = game:GetService("Players").LocalPlayer
+	characterFolders = workspace.PlayerCharacters
+	backpack = player:WaitForChild("Backpack")
+	runService = game:GetService("RunService")
+	EventCombat = game:GetService("ReplicatedStorage").Events.CombatRegister
+	EventQuest = game:GetService("ReplicatedStorage").Events.Quest
+	sequence = 1
+	local noClipButton
+	EventHaki = game:GetService("ReplicatedStorage").Events.Haki
+	styleSeletect = {
+		""
+	}
+	
+	local fruitFromBackpack
+	fullCircle = 2 * math.pi
+	halfCircle = math.pi
+	local autoFarmButton 
+	smartBuso = false
+	radius = 3.2
+	radius2 = 5
+	tweenService = game:GetService("TweenService")
+	bossPos = nil
+	tweenGlobal = nil
+	players = game:GetService("Players")
+	speedMarineShip = 30
+	cooldownValue = 0.01
+	attempts = game.ReplicatedStorage["Stats"..(game.Players.LocalPlayer.Name)].Stats.Attempts
+	hitCooldown = time()
+	actualCaptain = nil
+	respawnShip = nil
+	local gotFruit = {
+		false,
+		nil
+	}
+	dfFolder = game:GetService("Workspace").Env.Settings
+	marineFarmDistance = 1000
+	speedIslandTp = 100
+	ships = workspace.Ships
+	shipsNpc = ships:WaitForChild("NPC")
+	tpIsland = false
+	water = workspace:WaitForChild("Effects"):WaitForChild("Water")
+	EventShip = game:GetService("ReplicatedStorage").Events.ShipEvents.Spawn
+	nextCaptian = true
+	speedAutoFarm = 30
+	distanceFromBoss = 7.5
+	local idButton 
+	MarketPlaceService = game:GetService("MarketplaceService")
+	player = game:GetService("Players").LocalPlayer
+	playerSize = player.Character:WaitForChild("Humanoid").HipHeight
+	Height = (0.5 * player.Character:WaitForChild("HumanoidRootPart").Size.Y) + playerSize
+	local antiFallButton
+	islandFolder = game:GetService("Workspace").Islands
+	NPC = workspace.NPCs
+	backToShip = false
+	httpService = game:GetService("HttpService")
+	renderCache = nil
+	dfBeam = Instance.new("Beam")
+	dfAttachment = Instance.new("Attachment",player.Character:WaitForChild("HumanoidRootPart"))
+	EventDrop = game:GetService("ReplicatedStorage").Events.Tools
+	dfGui = Instance.new("BillboardGui")
+	textGui = Instance.new("TextLabel",dfGui)
+	dfGui.AlwaysOnTop = true
+	dfGui.Size = UDim2.new(0, 150, 0, 50)
+	dfGui.StudsOffset = Vector3.new(0, 5, 0)
+	textGui.BackgroundTransparency = 1.000
+	textGui.Size = UDim2.new(1, 0, 1, 0)
+	textGui.TextScaled = true
+	
+	local url 
+	effects = workspace.Effects
+	local UI
+	oritentedBoss = false
+	
+	shipsQueue = {
+	
+	}
+	captiansQueue = {
+	
+	}
+	
+	autoDropList = {
+		Bomb = false,
+		Mera = false,
+		Hie = false,
+		Magu = false,
+		Pika = false,
+		Suke = false,
+		Bari = false,
+		Goro = false,
+		Tori = false,
+		Zushi = false
+	}
+	
+	autoStoreList = {
+		Bomb  = false,
+		Mera = false,
+		Hie = false,
+		Magu = false,
+		Pika = false,
+		Suke = false,
+		Bari = false,
+		Goro = false,
+		Tori = false,
+		Zushi = false
+	}
+	
+	vu = game:GetService("VirtualUser")
+	npcFocused = nil
+	fruitGot = false
+	partsNoClipped = {
+	   
+	}
+	
+	hitBox = Instance.new("Part",workspace)
+	weldBox = Instance.new("Weld",hitBox)
+	hitBox.CanCollide = false
+	hitBox.Name = "lololP2"
+	hitBox.Anchored = false
+	hitBox.Massless = true
+	hitBox.Size = Vector3.new(5,4,5)
+	hitBox.Transparency = 1
+	hitBox.Position = player.Character:WaitForChild("HumanoidRootPart").Position
+	weldBox.Part0 = hitBox
+	weldBox.Part1 = player.Character:WaitForChild("HumanoidRootPart")
+	
+	statsPlayer = game:GetService("ReplicatedStorage")["Stats"..player.Name]
+	quests = statsPlayer.Quest
+	bossFocused = nil
+	bossHelpersFreezed = false
+	canNoClip = false
+	fruitChanged = nil
+	local connections
+	camera = workspace.CurrentCamera
+	folder = Instance.new("Folder",workspace)
+	folder.Name = "hitsbox"
+	
+	fruits = {
+		"Bomb",
+		"Mera",
+		"Hie",
+		"Magu",
+		"Pika",
+		"Suke",
+		"Bari",
+		"Goro",
+		"Tori",
+		"Zushi"
+	}
+	
+	inventoryItems = game:GetService("ReplicatedStorage"):WaitForChild("Stats"..player.Name):WaitForChild("Inventory"):WaitForChild("Inventory")
+	EventStoreFruits = game:GetService("ReplicatedStorage").Events.FruitStorage
+	
+	questList = {
+		["Bandits"] = {
+			"Raphtalia",
+			"Help Raphtalia"
+		},
+		["Bandit Boss"] = {
+			"Ronny",
+			"Help Ronny"
+		},
+		["Desert Bandits"] = {
+			"Noah",
+			"Help Noah"
+		},
+		["Lucid"] = {
+			"Tyrone",
+			"Take down Lucid"
+		},
+		["Krieg Pirates"] = {
+			"Chef Rice",
+			"Help Rice"
+		},
+		["Zou Inhabitants"] = {
+			"Zen",
+			"Help Zen"
+		},
+		["Corrupt Marines"] = {
+			"Robert",
+			"Help Robert"
+		},
+		["Sky district bandits"] = {
+			"Vego",
+			"Help vego"
+		},
+		["Castle Guards"] = {
+			"Zhen",
+			"Help zhen"
+		},
+		["Sky Guardians"] = {
+			"Raze",
+			"Help raze"
+		},
+	}
+	
+	questDoing = {
+	
+	}
+	
+	npcList = {
+		"Bandit",
+		"Bandit Boss",
+		"Desert Bandit",
+		"Lucid's Lad",
+		"Lucid's Righthand",
+		"Lucid",
+		"Krieg Pirate",
+		"Zou Inhabitant",
+		"Corrupt Marine",
+		"Monkey",
+		"Sky District Bandit",
+		"Castle Guard",
+		"Sky Guardian"
+	}
+	
+	function createTrap(rp,humanoid)
+		part1 = Instance.new("Part",folder)
+		part2 = Instance.new("Part",folder)
+		part3 = Instance.new("Part",folder)
+		part4 = Instance.new("Part",folder)
+	
+		part1.Name = "HITBOXNPCS"
+		part1.Anchored = true
+		part1.Size = Vector3.new(20,20,5)
+		part1.Transparency = 0
+		part1.CanCollide = true
+	
+		part2.Name = "HITBOXNPCS"
+		part2.Anchored = true
+		part2.Size = Vector3.new(20,20,5)
+		part2.Transparency = 0
+		part2.CanCollide = true
+	
+		part3.Name = "HITBOXNPCS"
+		part3.Anchored = true
+		part3.Size = Vector3.new(20,20,5)
+		part3.Transparency = 0
+		part3.CanCollide = true
+	
+		part4.Name = "HITBOXNPCS"
+		part4.Anchored = true
+		part4.Size = Vector3.new(20,20,5)
+		part4.Transparency = 0
+		part4.CanCollide = true
+	
+		part5 = Instance.new("Part",folder)
+		part5.Name = "HITBOXNPCS5"
+		part5.Size = Vector3.new(20,1,20)
+		part5.Transparency = 0
+		part5.CanCollide = true
+	
+		part5.CFrame = CFrame.new(Vector3.new(10254.1396,1796.68335,-9951.56348) + Vector3.new(0,7.5,0))
+		part5.Orientation = Vector3.new(0,-45,0)
+		part5.Anchored = true
+	
+		part1.CFrame = CFrame.new(Vector3.new(part5.Position.X,part5.Position.Y + 10,part5.Position.Z) - part1.CFrame.RightVector * (part5.Size / 2))
+		part1.Orientation = Vector3.new(0,90,0)
+		part2.CFrame = CFrame.new(Vector3.new(part5.Position.X,part5.Position.Y + 10,part5.Position.Z) - (-part2.CFrame.RightVector) * (part5.Size / 2)) 
+		part2.Orientation = Vector3.new(0,90,0)
+		part3.CFrame = CFrame.new(Vector3.new(part5.Position.X,part5.Position.Y + 10,part5.Position.Z) - part3.CFrame.lookVector * (part5.Size / 2)) 
+		part3.Orientation = Vector3.new(0,0,0)
+		part4.CFrame = CFrame.new(Vector3.new(part5.Position.X,part5.Position.Y + 10,part5.Position.Z) - (-part4.CFrame.lookVector) * (part5.Size / 2)) 
+		part4.Orientation = Vector3.new(0,0,0)
+	end
+	
+	bossList = {
+	}
+	
+	listPartsTouch = {
+	
+	}
+	
+	local function randomNpcPosition(n)
+		if n == 1 then
+			return CFrame.new(2,0,0)
+		elseif n == 2 then
+			return CFrame.new(0,0,2)
+		elseif n == 3 then
+			return CFrame.new(-2,0,0)
+		end
+	end
+	
+	local islands = {
+		["Gravito's Lair"] = Vector3.new(2600.4856, 7.64844131, -15357.0693),
+		["Trader's Island"] = Vector3.new(-2699.14209, 7.65625381, -10178.7158),
+		["Shell's Town"] = Vector3.new(-533,13,-4548),
+		["Orange Town"] = Vector3.new(-7005,5,-5339),
+		["Island Of Zou"] = Vector3.new(-4338,7,-2546),
+		["Colosseum"] = Vector3.new(-2020,7,-7634),
+		["Town of Beginnings"] = Vector3.new(964,9,1000),
+		["Arlong Park"] = Vector3.new(506,13,-12935),
+		["Sandora"] = Vector3.new(-1299,10,1156),
+		["Sphinx Island"] = Vector3.new(-6280,5,-9832),
+		["Mysterious Cliff"] = Vector3.new(2197,6,-8733),
+		["Sky island"] = Vector3.new(9259,1703,-10846),
+		["Roca Island"] = Vector3.new(5186,4,-5333),
+		["Kori Island"] = Vector3.new(-6668,7,1821),
+		["Marine Fort F-1"] = Vector3.new(2763,6,-1044),
+		["Restaurant Baratie"] = Vector3.new(-3912,6,-5614)
+	}
+	
+	local npcFarming = {
+	
+	}
+	
+	local bossFarming = ""
+	
+	local styles = {
+		["Melee"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Melee", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Melee", {i, "Ground", "Melee"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Rokushiki"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Rokushiki", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Rokushiki", {i, "Ground", "Rokushiki"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["FishmanKarate"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "FishmanKarate", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "FishmanKarate", {i, "Ground", "FishmanKarate"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["BlackLeg"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "BlackLeg", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "BlackLeg", {i, "Ground", "BlackLeg"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Katana"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Electro"] =  function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Electro", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Electro", {i, "Ground", "Electro"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Kiribachi"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Candy Cane"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Santa's Bells"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Skyblue Katana"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end,
+		["Golden Staff"] = function(npc)
+			for i = 1, 5 do
+				EventCombat:InvokeServer({"swingsfx", "Sword", i});
+				EventCombat:InvokeServer({"damage", npc.HumanoidRootPart, "Sword", {i, "Ground", "Sword"}, true})
+	
+				if (i == 5 and npc.Name:find("Captain")) then
+					wait(1);
+				end;
+				wait(0.1);
+			end;
+		end
+	}
+	
+	local function getStyle(name)
+		for _,v in pairs(player.Backpack:GetChildren()) do
+			if v:IsA("Tool") and v.Name == name then
+				styleSeletect[1] = v.Name
+				styleSeletect[2] = v
+				return true
+			end 
+		end
+		for _,v in pairs(player.Character:GetChildren()) do
+			if v:IsA("Tool") and v.Name == name then
+				styleSeletect[1] = v.Name
+				styleSeletect[2] = v
+				return true
+			end 
+		end
+		styleSeletect[2] = nil
+		return false
+	end
+	
+	local function getStyleEquiped()
+		for _,v in pairs(player.Character:GetChildren()) do
+			if v:IsA("Tool") and styles[v.Name] then
+				styleSeletect[1] = v.Name
+				styleSeletect[2] = v
+				return true
+			end 
+		end
+		styleSeletect[2] = nil
+		return false
+	end
+	
+	local function getClosestNpc()
+		local distancenNow = nil
+		for i,v in pairs(NPC:GetChildren())do
+			if npcFarming[v.Name] then
+				local c = (v.HumanoidRootPart.Position - player.Character:WaitForChild("HumanoidRootPart").Position).magnitude
+				if distancenNow == nil then
+					distancenNow = c
+					npcFocused = v
+				elseif c < distancenNow then
+					distancenNow = c
+					npcFocused = v
+				end
+			end
+		end
+	
+		sequence = 1
+		hitCooldown = time()
+		radius = 13
+	end	
+	
+	local function checkTrigered()
+		local amount = 0
+		local npcGot = nil
+		for i,v in pairs(NPC:GetChildren()) do
+			if npcFarming[v.Name] then
+				if v:FindFirstChild("Info") and v.Info:FindFirstChild("Target") and v.Info.Target.Value and v.Info.Target.Value == player.Character:WaitForChild("HumanoidRootPart") then
+					amount = amount + 1
+					npcGot = v
+				end
+			end
+		end
+		if amount == 1 then
+			npcFocused = npcGot
+		end
+	end
+	
+	local function getXAndZPositions(angle)
+		local x = math.cos(angle) * radius
+		local z = math.sin(angle) * radius
+		return x, z
+	end
+	
+	local function getNextCaptian()
+		local s = ships:FindFirstChild(player.Name.."Ship")
+		if not s then return end
+		local rp = s:FindFirstChild("HumanoidRootPart")
+		if not rp then
+			return
+		end
+		for _,v in pairs(NPC:GetChildren())do
+			if v ~= actualCaptain and (v.Name == "Pirate Captain" or v.Name == "Marine Captain") and v:WaitForChild("Info"):WaitForChild("Hostile").Value then
+				local rpCap = v:FindFirstChild("HumanoidRootPart")
+				if (rp.Position - rpCap.Position).magnitude <= marineFarmDistance then
+					actualCaptain = v
+					canNoClip = true
+					sequence = 1
+					nextCaptian = false	
+					return rpCap
+				end
+			end
+		end
+	end
+	
+	local function foundChild(child)
+		for i = 1, #captiansQueue do
+			if captiansQueue[i] == child then
+				return i
+			end
+		end
+	end
+	
+	local function foundShip(child)
+		for i = 1, #shipsQueue do
+			if shipsQueue[i] == child then
+				return i
+			end
+		end
+	end
+	
+	local function backacpkFruits()
+		for _,v in pairs(backpack:GetChildren())do
+			if v:IsA("Tool") and table.find(fruits,v.Name) and not string.find(inventoryItems.Value,v.Name) then
+				return v
+			end
+		end
+		return nil
+	end
+	
+	local function protectPlayer()
+		local part1 = Instance.new("Part",folder)
+		local rp = player.Character:WaitForChild("HumanoidRootPart")
+		part1.Name = "HITBOXNPCS"
+		part1.Anchored = true
+		part1.Size = Vector3.new(15,10,5)
+		part1.Transparency = 0
+		part1.CanCollide = true
+	
+		while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and bossFocused do 
+			part1.CFrame = CFrame.new(rp.CFrame.p - (-rp.CFrame.lookVector) * 4,rp.Position)
+		end
+	end
+	
+	local function getBossHelpers()
+		for i,v in pairs(NPC:GetChildren())do
+			if v.Name == bossList[bossFarming][2] then
+				if v:FindFirstChild("Humanoid") and v:FindFirstChild("Info") then
+					if not bossList[bossFarming].traped then 
+						local bodyPosition = Instance.new("BodyPosition",v:FindFirstChild("HumanoidRootPart"))
+						bodyPosition.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+						bodyPosition.P = 80000
+						bodyPosition.Position = Vector3.new(10181.3398, 1784.48, -9899.547)
+					end
+				end	
+			end
+		end
+	end
+	
+	local scriptFunctions
+	scriptFunctions = {
+		["Auto Style"] = {
+			false,
+			function() 
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Auto Style"][1] do
+					if styleSeletect[2] ~= nil then
+						if styleSeletect[2].Parent == nil and player.Character.Parent == characterFolders then
+							getStyle(styleSeletect[1])
+						end
+					elseif styleSeletect[2] == nil then
+						getStyle(styleSeletect[1])
+					end
+					if not fruitGot and styleSeletect[2] and styleSeletect[2].Parent ~= player.Character then
+						pcall(function()
+							player.Character:WaitForChild("Humanoid"):EquipTool(styleSeletect[2])
+						end)	
+					end	
+				end
+			end
+		},
+		["Auto Npc"] = {
+			false,
+			function() 
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Auto Npc"][1] do
+					if player.Character.Parent == characterFolders and not player.Character:FindFirstChild("SafeForceField") then
+	
+						pcall(function()
+							if not npcFocused or npcFocused.Parent ~= NPC then
+								getClosestNpc()
+							end
+	
+							if scriptFunctions["Auto-Quest (WIP)"][1] then
+								scriptFunctions["Auto-Quest (WIP)"][2]()
+							end
+						end)	
+	
+						if npcFocused and npcFocused.Parent == NPC then 
+							pcall(function()
+								local npcRp = npcFocused:FindFirstChild("HumanoidRootPart")
+								if npcRp then 
+									local distance = (npcRp.Position - player.Character:WaitForChild("HumanoidRootPart").Position).magnitude
+									local timeTween = distance / speedAutoFarm
+									local angle = 4 * (fullCircle / 4)
+									local x, z = getXAndZPositions(angle)
+									local position = (npcRp.CFrame * CFrame.new(x, 0, z)).p
+									local lookAt = npcRp.Position
+									tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+										CFrame = CFrame.new(position,lookAt)
+									})
+									tweenGlobal:Play()
+									tweenGlobal.Completed:Wait()
+									timeTween = nil				
+									angle = nil			
+									x, z = nil 			
+									position = nil				
+									lookAt = nil				
+									npcRp = nil				
+	
+									if time() - hitCooldown > 2 then
+										radius = 3.2
+										if distance <= 5 then
+											checkTrigered()
+											if styleSeletect[2] then
+												styles[styleSeletect[1]](npcFocused)
+											else
+												if getStyleEquiped() then
+													styles[styleSeletect[1]](npcFocused)
+												end
+											end
+											sequence = sequence + 1
+											if sequence == 5 then
+												sequence = 1
+												radius = 13
+												hitCooldown = time()
+											end
+										end
+									end
+									distance = nil			
+								end
+							end)
+						end		
+					else
+						if tweenGlobal then
+							tweenGlobal:Cancel()
+						end
+					end	
+				end
+			end
+		},
+		["Auto-Quest (WIP)"] = {
+			false,
+			function()
+				if quests.CurrentQuest.Value == "None" and questDoing[1] then
+					if player.QuestCD.Value then return end
+	
+					local questNpc
+					local s,e = pcall(function()
+						questNpc = NPC[questList[questDoing[1]][1]] 
+					end)
+					if not s then
+						return
+					end
+	
+					local distance = (questNpc.HumanoidRootPart.Position - player.Character:WaitForChild("HumanoidRootPart").Position).magnitude
+					local timeTween = distance / speedAutoFarm
+					tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+						CFrame = questNpc.HumanoidRootPart.CFrame - Vector3.new(3,0,3)
+					})
+					tweenGlobal:Play()
+					tweenGlobal.Completed:Wait()
+					local A_1 = 
+						{
+							[1] = "takequest", 
+							[2] = questList[questDoing[1]][2]
+						}
+					EventQuest:InvokeServer(A_1)
+					A_1 = nil
+					questNpc = nil
+					s,e = nil, nil
+					distance = nil
+					timeTween = nil
+				end
+			end
+		},
+		["Start Ship AutoFarm!"] = {
+			false,
+			function()
+				if not ships:FindFirstChild(player.Name.."Ship") then
+					EventShip:InvokeServer()
+				end
+				local captainRp = nil
+				actualCaptain = nil
+				local playerRp = player.Character:WaitForChild("HumanoidRootPart")
+				local maxHaki = nil
+				local busoActived = false
+				if player:WaitForChild("PlayerGui"):WaitForChild("HUD"):WaitForChild("Buso"):WaitForChild("BBar").Visible then
+					maxHaki = statsPlayer:FindFirstChild("BusoBar") 
+				end
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Start Ship AutoFarm!"][1] do
+					if actualCaptain == nil or actualCaptain.Parent ~= NPC then
+						actualCaptain = nil
+						if busoActived then
+							busoActived = false
+							if smartBuso and maxHaki and not busoActived then
+								local A_1 = "Buso"
+								EventHaki:FireServer(A_1)
+							end
+						end
+						captainRp = getNextCaptian()
+					end
+					
+					if player.Character:WaitForChild("Humanoid").Sit then
+						player.Character:WaitForChild("Humanoid").Sit = false
+					end
+					
+					if actualCaptain and actualCaptain.Parent == NPC then
+						playerRp.Velocity = Vector3.new(0,0,0)
+						local distance = (captainRp.Position - playerRp.Position).magnitude
+						local timeToGo = distance / speedMarineShip
+						
+						if distance > 5 then
+							tweenGlobal = tweenService:Create(playerRp,TweenInfo.new(timeToGo,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+								CFrame = captainRp.CFrame * randomNpcPosition(math.random(1,3)),
+								Velocity = Vector3.new(0,0,0)
+							})
+							tweenGlobal:Play()
+						else
+							if smartBuso and maxHaki and not busoActived then
+								if maxHaki.Value > 20 then
+									busoActived = true
+									local A_1 = "Buso"
+									EventHaki:FireServer(A_1)
+								end
+							end
+							canNoClip = false
+							tweenGlobal = tweenService:Create(playerRp,TweenInfo.new(timeToGo,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+								CFrame = playerRp.CFrame * CFrame.new(0.2,0.2,0.2),
+								Velocity = Vector3.new(0,0,0)
+							})
+							tweenGlobal:Play()
+							pcall(function() -- THIS IS THE SHIP ATTACK FUNC.
+								if styleSeletect[2] then
+									styles[styleSeletect[1]](actualCaptain)
+								else
+									if getStyleEquiped() then
+										styles[styleSeletect[1]](actualCaptain)
+									end
+								end
+							end)
+							wait(cooldownValue)
+							sequence = sequence + 1
+							if sequence == 5 then
+								sequence = 1
+							end
+						end	
+					elseif respawnShip and backToShip then
+						canNoClip = true
+						local distance = (playerRp.Position - respawnShip.p).magnitude
+						if distance > 3 then
+						   local timeToGo = distance / speedMarineShip
+						   tweenGlobal = tweenService:Create(playerRp,TweenInfo.new(timeToGo,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+							   CFrame = respawnShip,
+							   Velocity = Vector3.new(0,0,0)
+						   })
+						   tweenGlobal:Play()
+						end	
+					end
+					
+				end
+				canNoClip = true
+			end
+		},
+		["Freeze Water"] = {
+			false,
+			function()
+				local part = Instance.new("Part")
+				part.Name = "walkWater"
+				part.Size = water.Size + Vector3.new(0,50,0)
+				part.Anchored = true
+				part.CanCollide = true
+				part.Transparency = 1
+				part.Position = water.Position - Vector3.new(0,25,0) 
+				part.Parent = workspace
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Freeze Water"][1] and part do
+					part.Position = water.Position - Vector3.new(0,25,0) 
+				end
+				part:Destroy()
+			end
+		},
+		["Auto store"] = {
+			false,
+			function()
+			
+			end
+		},
+		["Auto drop"] = {
+			false,
+			function()
+	
+			end
+		},
+		["Auto Buso"] = {
+			false,
+			function()
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Auto Buso"][1] do
+					if statsPlayer:FindFirstChild("BusoBar") and not smartBuso then
+						local maxHaki = statsPlayer:FindFirstChild("BusoBar")
+						if maxHaki and maxHaki.MaxValue > 0 then
+							if maxHaki.Value == maxHaki.MaxValue then
+								local A_1 = "Buso"
+								EventHaki:FireServer(A_1)
+							end
+						end
+					end
+				end
+			end
+		},
+		["No Fall Damage"] = {
+			false,
+			function()
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["No Fall Damage"][1] do
+					if player.Character:FindFirstChild("FallDamage") and not player.Character:FindFirstChild("FallDamage").Disabled then
+						player.Character:FindFirstChild("FallDamage").Disabled = true
+					end
+				end
+				if player.Character:FindFirstChild("FallDamage") and not player.Character:FindFirstChild("FallDamage").Disabled then
+					player.Character:FindFirstChild("FallDamage").Disabled = false
+				end
+			end
+		},
+		["NoClip"] = {
+			false,
+			function()
+				canNoClip = true
+				local partLol = Instance.new("Part",workspace)
+				partLol.CanCollide = true
+				partLol.Anchored = true
+				partLol.Name = "TRAVEL BOYI"
+				partLol.Size = Vector3.new(25,2,25)
+				partLol.Transparency = 1
+				partLol.CFrame = CFrame.new(Vector3.new(player.Character:WaitForChild("HumanoidRootPart").Position.X,(player.Character:WaitForChild("HumanoidRootPart").Position.Y - Height) - 1,player.Character:WaitForChild("HumanoidRootPart").Position.Z))
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["NoClip"][1] do
+					if canNoClip then
+						partLol.CFrame = CFrame.new(Vector3.new(player.Character:WaitForChild("HumanoidRootPart").Position.X,(player.Character:WaitForChild("HumanoidRootPart").Position.Y - Height)- 1,player.Character:WaitForChild("HumanoidRootPart").Position.Z))    
+					end
+				end
+				canNoClip = false
+				partLol:Destroy()
+			end
+		},
+		["Auto Boss"] = {
+			false,
+			function()
+				
+				if not noClipButton:GetState() then
+					spawn(function()
+						noClipButton:SetState(true)
+					end)
+				end
+	
+				if not antiFallButton:GetState() then
+					spawn(function()
+						antiFallButton:SetState(true)
+					end)
+				end
+				
+				local distance = (player.Character:WaitForChild("HumanoidRootPart").Position - bossList[bossFarming][3]).magnitude
+				local timeTween = distance / speedAutoFarm
+				tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+					CFrame = CFrame.new(Vector3.new(10107.2168,1797.29785,-9973.40723))
+				})
+				tweenGlobal:Play()
+				tweenGlobal.Completed:Wait()
+				
+				while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Auto Boss"][1] do
+					player.Character:WaitForChild("HumanoidRootPart").Velocity = Vector3.new(0,0,0)
+					if player.Character.Parent == characterFolders and not player.Character:FindFirstChild("SafeForceField") then
+	
+						if not bossFocused or bossFocused.Name ~= bossFarming  then
+							pcall(function()	
+								if scriptFunctions["Auto-Quest (WIP)"][1] then
+									scriptFunctions["Auto-Quest (WIP)"][2]()
+								end	
+							end)
+							if NPC:FindFirstChild(bossFarming) then
+								bossFocused = NPC:FindFirstChild(bossFarming) 
+								connections.boss = bossFocused.ChildAdded:Connect(function(child)
+									if child:IsA("BodyVelocity")then
+										child:Destroy()
+									end
+								end)
+							end
+	
+						end
+	
+						if bossFocused and bossFocused.Name == bossFarming and bossFocused.Parent == nil then
+							bossFocused = nil	
+							local distance = (player.Character:WaitForChild("HumanoidRootPart").Position - Vector3.new(9889.89,1697.98,-9734)).magnitude
+							local timeTween = distance / speedAutoFarm
+							tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+								CFrame = CFrame.new(Vector3.new(10294.4395,1794.07922,-10015.9102))
+							})
+							tweenGlobal:Play()
+							tweenGlobal.Completed:Wait()
+						end
+	
+	
+						if bossFocused and bossFocused.Parent ~= nil and bossFocused.Parent == NPC and bossFocused.Name == bossFarming then
+	
+							local rp = bossFocused:FindFirstChild("HumanoidRootPart") or nil
+							getBossHelpers()
+							if rp and bossFocused:FindFirstChild("Humanoid") then
+								if not bossList[bossFarming].traped then
+									
+									local bodyPosition = Instance.new("BodyPosition",rp)
+									bodyPosition.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+									bodyPosition.Position = Vector3.new(10254.5049,1804.18335,-9950.57617)
+									bossList[bossFarming].traped = true 
+									bossFocused:FindFirstChild("Humanoid").WalkSpeed = 0
+									bossFocused:FindFirstChild("Humanoid").JumpPower = 0
+									repeat
+										runService.Heartbeat:Wait()
+									until not game.CoreGui[randomTitle] or not scriptFunctions["Auto Boss"][1] or (rp.Position - CFrame.new(Vector3.new(10254.1396,1796.68335,-9951.56348) + Vector3.new(0,7.6,0)).p).magnitude <= 5
+									bodyPosition.P = 50000
+								end	
+	
+								if not bossList[bossFarming][4](rp) then
+									bossFocused:FindFirstChild("Humanoid").PlatformStand = true
+									bossFocused:FindFirstChild("Humanoid").WalkSpeed = 0
+									bossFocused:FindFirstChild("Humanoid").JumpPower = 0
+									
+									local distance = (player.Character:WaitForChild("HumanoidRootPart").Position - rp.Position).magnitude
+									local timeTween = distance / speedAutoFarm
+									tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+										CFrame = CFrame.new(Vector3.new(10254.5049,1804.18335,-9950.57617) - Vector3.new(0,distanceFromBoss,0))
+									})
+									tweenGlobal:Play()
+									if distance <= (distanceFromBoss + 0.5) then	
+										local hp = player.Character:WaitForChild("Humanoid").Health
+										if styleSeletect[2] then
+											styles[styleSeletect[1]](bossFocused)
+										else
+											if getStyleEquiped() then
+												styles[styleSeletect[1]](bossFocused)
+											end
+										end
+										wait(cooldownValue)
+										sequence = sequence + 1
+										if player.Character:WaitForChild("Humanoid").Health < hp then
+											tweenGlobal = tweenService:Create(player.Character:WaitForChild("HumanoidRootPart"),TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+												CFrame = CFrame.new(Vector3.new(10254.5049,1804.18335,-9950.57617) - Vector3.new(0,10,0))
+											})
+											tweenGlobal:Play()
+											wait(4)
+										end 
+										if sequence == 5 then
+											sequence = 1		
+										end
+									end
+								end
+							end
+						else
+							removeTraps()
+						end
+					end	
+				end
+				removeTraps()
+				folder:Destroy()
+				effects.Name = "Effects"
+			end
+		},
+		["Webhook"] = {
+			false,
+			function()
+				
+			end
+		}
+	}
+	
+	local function foundShip()
+		for i, v in next, game:GetService("Workspace").Ships:GetChildren() do
+			if (v.Name:find(game.Players.LocalPlayer.Name)) then
+				return true;
+			end;
+		end;
+	
+		return false;
+	end;
+	
+	game:GetService("Workspace").Ships.ChildRemoved:Connect(function(child)
+		if (child.Name:find(game.Players.LocalPlayer.Name) and scriptFunctions["Start Ship AutoFarm!"][1]) then
+			repeat
+				EventShip:InvokeServer();
+				wait(1);
+			until foundShip();
+		end;
+	end);
+	
+	local function teleportFunction(position)	
+	
+		spawn(function()
+			antiFallButton:SetState(true)
+		end)
+		spawn(function()
+			noClipButton:SetState(true)
+		end)
+		canNoClip = true
+		local distance = (player.Character:WaitForChild("HumanoidRootPart").Position - position).magnitude
+		local timeTween = distance / speedIslandTp
+		local rp = player.Character:WaitForChild("HumanoidRootPart")
+		tweenGlobal = tweenService:Create(rp,TweenInfo.new(timeTween,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+			Velocity = Vector3.new(0,0,0),
+			CFrame = CFrame.new(position)
+		})
+		tweenGlobal:Play()	
+		tweenGlobal.Completed:Wait()
+		distance = nil
+		timeTween = nil	
+	end
+	
+	local function foundCliped(child)
+		for i = 1, #partsNoClipped do
+			if partsNoClipped[i] == child then
+				return i
+			end
+		end
+	end
+	
+	connections = {
+		npcRemoved = NPC.ChildRemoved:Connect(function(child)
+			if child == npcFocused then
+				npcFocused = nil
+			end
+		end),
+		antiAfk = player.Idled:Connect(function()
+			vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			wait(1)
+			vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end),
+		shipPlayer = ships.ChildRemoved:Connect(function(child)
+			if child.Name == player.Name.."Ship" and scriptFunctions["Start Ship AutoFarm!"][1] then
+				if respawnShip then
+					canNoClip = true
+					if tweenGlobal and tweenGlobal.PlaybackState == Enum.PlaybackState.Playing then
+						tweenGlobal:Cancel()
+					end
+					while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] and scriptFunctions["Start Ship AutoFarm!"][1] do
+						local playerRp = player.Character:WaitForChild("HumanoidRootPart")
+						local distance = (playerRp.Position - respawnShip.p).magnitude
+						local timeToGo = distance / speedMarineShip
+						tweenGlobal = tweenService:Create(playerRp,TweenInfo.new(timeToGo,Enum.EasingStyle.Linear,Enum.EasingDirection.InOut),{
+							CFrame = respawnShip,
+							Velocity = Vector3.new(0,0,0)
+						})
+						tweenGlobal:Play()
+						if distance <= 3 then
+							break
+						end
+					end
+					if scriptFunctions["Start Ship AutoFarm!"][1] then	
+						EventShip:InvokeServer()	
+					end	
+				else
+					EventShip:InvokeServer()
+				end	
+			end
+		end),
+		shipPlayerAdded = ships.ChildAdded:Connect(function(child)
+			if child.Name == player.Name.."Ship" and scriptFunctions["Start Ship AutoFarm!"][1] then
+				child:WaitForChild("HumanoidRootPart").Anchored = true
+			end
+		end),
+		died = player.CharacterAdded:Connect(function(character)
+			if character.Parent == nil then
+				character.AncestryChanged:Wait()
+			end
+			weldBox.Part1 = character:WaitForChild("HumanoidRootPart")
+			dfAttachment.Parent = character:WaitForChild("HumanoidRootPart")
+			if dfBeam.Attachment1 ~= nil then
+				dfBeam.Attachment0 = dfAttachment
+			end
+	
+		end),
+		noClip = hitBox.Touched:Connect(function(partTouched)
+			if scriptFunctions["NoClip"][1] and not partTouched:IsDescendantOf(player.Character) and partTouched.Name ~= "TRAVEL BOYI"  and partTouched.Name ~= "walkWater" and partTouched.CanCollide and partTouched.Name ~= "HITBOXNPCS" and not partTouched:IsDescendantOf(shipsNpc) then
+				if not table.find(partsNoClipped,partTouched) then
+					table.insert(partsNoClipped,partTouched)
+					partTouched.CanCollide = false
+				end
+			elseif table.find(partsNoClipped,partTouched) and not scriptFunctions["NoClip"][1] then
+				partTouched.CanCollide = true
+			end
+		end),
+		dfEquiped = player.Character.ChildAdded:Connect(function(child)
+			if table.find(fruits,child.Name) then
+				fruitChanged = child
+			end
+		end),
+		gotDF = player:WaitForChild("Backpack").ChildAdded:Connect(function(child)
+			if table.find(fruits,child.Name) and child ~= fruitChanged then
+				if scriptFunctions["Webhook"][1] and autoStoreList[child.Name] then
+					local msg = {{
+						["title"] = "YOU GOT A DF",
+						["description"] = "",
+						["color"] = tonumber(0xfcba03),
+						["footer"] = {},
+						["fields"] = {
+							{
+								["name"] = "Fruit",
+								["value"] = child.Name,
+								["inline"] = true
+							},
+							{
+								["name"] = "Time",
+								["value"] = (function()
+									local function format(num, digits)
+										return string.format("%0" .. digits .. "i", num);
+									end;
+	
+									local osDate = os.date("!*t")
+									local year, mon, day = osDate["year"], osDate["month"], osDate["day"]
+									local hour, min, sec = osDate["hour"], osDate["min"], osDate["sec"]
+									return year .. "-" .. format(mon, 2) .. "-" .. format(day, 2) .. "T" .. format(hour, 2) .. ":" .. format(min, 2) .. ":" .. format(sec, 2) .. "Z"
+								end)();
+								["inline"] = true
+							}
+						}
+					}};
+	
+					syn.request({
+						Url = url:GetText(), 
+						Method = "POST", 
+						Headers = {["Content-Type"] = "application/json"}, 
+						Body = game:GetService("HttpService"):JSONEncode(
+						{
+							["username"] = "HYDRA DF WEBHOOK", 
+							["content"]= "<@"..idButton:GetText()..">", 
+							["embeds"] = msg
+						})
+					}) 
+				end
+				fruitFromBackpack = child
+			end
+		end),
+		boss = nil,
+		dfHadSpawned = nil
+	}
+	
+	game.CoreGui:WaitForChild(randomTitle).ResetOnSpawn = false
+	
+	spawn(function()
+		while runService.Heartbeat:Wait() and game.CoreGui[randomTitle] do
+			if fruitFromBackpack and fruitFromBackpack.Parent == player:WaitForChild("Backpack") then
+				if scriptFunctions["Auto drop"][1] and gotFruit[2] and fruitsSelected["AutoDiscard"][gotFruit[2].Name] then
+					EventDrop:InvokeServer("drop", gotFruit[2])
+					gotFruit[2] = nil
+				end
+				if scriptFunctions["Auto store"][1] and gotFruit[2] and fruitsSelected["AutoStore"][gotFruit[2].Name] and not string.find(inventoryItems.Value,gotFruit[2].Name) then
+					gotFruit[1] = true
+					humanoid:EquipTool(gotFruit[2])
+					EventStoreFruits:InvokeServer()
+					gotFruit[1] = false
+					gotFruit[2] = nil
+				elseif gotFruit[2] and (not scriptFunctions["Auto drop"][1]) or (gotFruit[2] and not fruitsSelected["Auto drop"][gotFruit[2].Name]) then
+					gotFruit[2] = nil
+				end
+			end
+			
+			if fruitChanged and fruitChanged.Parent == workspace then
+				fruitChanged = nil
+			end
+		end
+	end)
+	
+	Misc.Toggle({
+		Text = "No drown damage",
+		Callback = function()
+			toggles.no_drown_dmg = not toggles.no_drown_dmg;
+		end,
+	})
+	
+	--[[ Misc.Toggle({
+		Text = "Chest ESP",
+		Callback = function(chvalue)
+			while wait(1) do
+				if chvalue == true then
+			for i,v in pairs(game.Workspace.Env:GetDescendants()) do
+				if v.ClassName == "Model" then
+				if v.Parent.ClassName == "Folder" then
+				local BillboardGui = Instance.new("BillboardGui")
+				local TextLabel = Instance.new("TextLabel")
+				
+				BillboardGui.Parent = v
+				BillboardGui.AlwaysOnTop = true
+				BillboardGui.LightInfluence = 1
+				BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+				BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+				
+				TextLabel.Parent = BillboardGui
+				TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Size = UDim2.new(1, 0, 1, 0)
+				TextLabel.Text = "X"
+				TextLabel.TextColor3 = Color3.fromRGB(201, 34, 34)
+				TextLabel.TextScaled = true
+				end
+				end
+				end
+			elseif chvalue == false then
+			for i,v in pairs(game.Workspace.Env:GetDescendants()) do
+				if v:IsA("BillboardGui") then
+					v:Destroy()
+				end
+				
+			end
+		end
+			end
+	end,
+	}) ]]
+	
+	Misc.Toggle({
+		Text = "Inf Dash",
+		Callback = function()
+			toggles.inf_dash = not toggles.inf_dash;
+		end,
+	})
+	
+	Misc.Button({
+		Text = "Buy Bubble",
+		Callback = function()
+			game.ReplicatedStorage.Events.Bubble:FireServer();
+		end,
+	})
+	
+	Misc.Button({
+		Text = "Attempts",
+		Callback = function()
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Hydra Hub";
+					Text = "You've got: "..attempts.Value.." attempts";
+					Icon = "rbxassetid://6309112252";
+					Duration = 5;
+					})
+		end,
+	})
+	
+	Settings.Button({
+		Text = "Destroy",
+		Callback = function()
+			for _,v in pairs(connections) do
+				v:Disconnect()
+			end
+			for _,v in pairs(partsNoClipped) do
+				v.CanCollide = true
+			end
+	
+	
+			game.CoreGui[randomTitle]:Destroy()
+			if workspace:FindFirstChild("walkWater") then
+				workspace.walkWater:Destroy()
+			end
+			if workspace:FindFirstChild("lololP2")then
+				workspace.lololP2:Destroy()
+			end
+			if workspace:FindFirstChild("TRAVEL BOYI") then
+				workspace["TRAVEL BOYI"]:Destroy()
+			end
+			removeTraps()
+			folder:Destroy()
+			effects.Name = "Effects"
+		end,
+		Information = function(self)
+			
+		end,
+	})
+	--[[ Misc.Toggle({
+		Text = "Chest ESP",
+		Callback = function(value)
+		while wait() do
+		if value then
+			for i,v in pairs(game.Workspace.Env:GetDescendants()) do
+				if v.ClassName == "Model" then
+				if v.Parent.ClassName == "Folder" then
+				local BillboardGui = Instance.new("BillboardGui")
+				local TextLabel = Instance.new("TextLabel")
+				
+				BillboardGui.Parent = v
+				BillboardGui.Name = "HydrasFockenESP"
+				BillboardGui.AlwaysOnTop = true
+				BillboardGui.LightInfluence = 1
+				BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+				BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+				
+				TextLabel.Parent = BillboardGui
+				TextLabel.Name = "FockenEsp1"
+				TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Size = UDim2.new(1, 0, 1, 0)
+				TextLabel.Text = "x"
+				TextLabel.TextColor3 = Color3.fromRGB(255, 94, 0)
+				TextLabel.TextScaled = true
+				end
+				end
+			end
+		elseif value == false then
+			for _,v in pairs(game.Workspace.Env:GetDescendants()) do
+				if v:IsA("BillboardGui") or v:IsA("TextLabel") or v.Name == "HydrasFockenESP" or v.Name == "FockenEsp1" then
+				v:Destroy()
+			end
+		end
+				if value == false then return end
+	
+			end
+		end
+		end,
+		Enabled = false
+	}) ]]
+	Misc.Button({
+		Text = "Hide identity",
+		Callback = function(value)
+			for i,v in pairs(game.Workspace.PlayerCharacters[game.Players.LocalPlayer.Name]:GetDescendants()) do
+				if v.Name == 'Shoes' or v.Name == 'Pants' or v.Name == 'Shirt' or v.Name == 'Mouth' or v.Name == 'Eye' or v.Name == 'Status' or v.Name == 'Hair1' or v.Name == 'Hair2' then
+					v:Destroy()
+			end
+		end
+		end,
+		Enabled = false
+	})
+	
+	SetupTab.Toggle({
+		Text = "Style Auto-Equip",
+		Callback = function(value)	
+			scriptFunctions["Auto Style"][1] = value
+			if value then
+				scriptFunctions["Auto Style"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	SetupTab.Dropdown({
+		Text = "Select Style",
+		Callback = function(value)
+			if not getStyle(value) then
+				
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Hydra Hub";
+					Text = "You do not have "..value.."!";
+					Icon = "rbxassetid://6309112252";
+					Duration = 3;
+					})
+				return
+			end
+		end,
+		Options = {"Melee", "Rokushiki", "BlackLeg", "Katana", "Electro", "Kiribachi", "Candy Cane", "Santa's Bells", "Golden Staff", "Skyblue Katana", "FishmanKarate"}
+})
+	
+	local good_fruits = {"Mera", "Magu", "Hie", "Pika", "Bari", "Suke", "Bomb", "Goro"}
+	game.Players.LocalPlayer.Backpack.ChildAdded:Connect(function(p1)
+		wait()
+		for i, v in next, good_fruits do
+			if (p1.Name:find(v) and getgenv().Fnotif) then
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Devil Fruit Notification"; -- the title (ofc)
+					Text = "A "..p1.Name.." Has Been Found!"; -- what the text says (ofc)
+					--Icon = ; -- the image if u want. 
+					Duration = 5; -- how long the notification should in secounds
+				})
+				game.Players.LocalPlayer.Character.Humanoid:EquipTool(p1)
+				wait(0.5)
+				game.ReplicatedStorage.Events.FruitStorage:InvokeServer();
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Devil Fruit Notification"; -- the title (ofc)
+					Text = "Successfully Stored Fruit"; -- what the text says (ofc)
+					--Icon = ; -- the image if u want. 
+					Duration = 5; -- how long the notification should in secounds
+				})
+			end
+		end
+	end)
+	
+	Misc.Toggle({
+		Text = "DF Autostore",
+		Callback = function(notifbool)
+			getgenv().Fnotif = notifbool
+		end,
+	})
+	
+	SetupTab.Toggle({
+		Text = "Freeze Water",
+		Callback = function(value)
+			scriptFunctions["Freeze Water"][1] = value
+			if value then
+				scriptFunctions["Freeze Water"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	autoFarmButton = MSF.Button({
+		Text = "Respawn ship Position",
+		Callback = function()
+	-- 		local metatable = getrawmetatable(game)
+	-- local namecall = metatable.__namecall 
+	-- setreadonly(metatable,false)
+	
+	-- metatable.__namecall = newcclosure(function(self,...)
+	-- if self.Name == "takestam" then 
+	-- return 0
+	-- end 
+	-- return namecall(self,...)
+	-- end )
+			-- commented out because this is just inf stam?
+		end,
+	})
+	
+	noClipButton = Misc.Toggle({
+		Text = "NoClip",
+		Callback = function(value)
+			scriptFunctions["NoClip"][1] = value
+			if value then
+				scriptFunctions["NoClip"][2]()
+			else
+				for i,v in pairs(partsNoClipped) do
+					v.CanCollide = true
+					table.remove(partsNoClipped,i)
+				end
+			end
+		end,
+		Enabled = false
+	})
+	
+	antiFallButton = SetupTab.Toggle({
+		Text = "No Fall Damage",
+		Callback = function(value)
+			scriptFunctions["No Fall Damage"][1] = value
+			if value then
+				scriptFunctions["No Fall Damage"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	local autoStoreButton 
+	autoStoreButton = SetupTab.Toggle({
+		Text = "DevilFruit Auto-Store",
+		Callback = function(value)
+			local s,res = pcall(MarketPlaceService.UserOwnsGamePassAsync,MarketPlaceService,player.UserId,12776768)
+			if value and not res then
+				
+				autoStoreButton:SetState(false)
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Hydra Hub";
+					Text = "You do not own the DF bag gamepass!";
+					Icon = "rbxassetid://6309112252";
+					Duration = 3;
+					})
+			end
+			scriptFunctions["Auto store"][1] = value
+		end,
+		Enabled = false
+	})
+	
+	SetupTab.DataTable({
+		Text = "DF's to keep",
+		Callback = function(data)
+			for i,v in pairs(data)do
+				autoStoreList[i] = v
+			end
+		end,
+		Options = {
+			Bomb = false,
+			Mera = false,
+			Hie = false,
+			Magu = false,
+			Pika = false,
+			Suke = false,
+			Bari = false,
+			Goro = false,
+			Tori = false,
+			Zushi = false
+		}
+	})
+	
+	SetupTab.Toggle({
+		Text = "DF Webhook",
+		Callback = function(value)
+			scriptFunctions["Webhook"][1] = value
+		end,
+		Enabled = false
+	})
+	
+	url = SetupTab.TextField({
+		Text = "Webhook Here",
+		Callback = function(value)
+			print(value)
+		end
+	})
+	
+	idButton = SetupTab.TextField({
+		Text = "Discord ID (If you wish to be pinged)",
+		Callback = function(value)
+			print(value)
+		end
+	})
+	
+	SetupTab.Toggle({
+		Text = "Auto drop",
+		Callback = function(value)
+			scriptFunctions["Auto drop"][1] = value
+		end,
+		Enabled = false
+	})
+	
+	SetupTab.DataTable({
+		Text = "DF's for Auto-Drop",
+		Callback = function(data)
+			for i,v in pairs(data)do
+				autoDropList[i] = v
+			end
+		end,
+		Options = {
+			Bomb = false,
+			Mera = false,
+			Hie = false,
+			Magu = false,
+			Pika = false,
+			Suke = false,
+			Bari = false,
+			Goro = false,
+			Tori = false,
+			Zushi = false
+		}
+	})
+	
+	AutoFarms.Slider({
+		Text = "Auto-Farm Speed",
+		Callback = function(value)
+			speedAutoFarm = value
+		end,
+		Min = 30,
+		Max = 100,
+		Def = 30
+	})
+	
+	AutoFarms.TextField({
+		Text = "Boss Distance (7.5 by default)",
+		Callback = function(value)
+			if tonumber(value) then
+				print(value)
+				distanceFromBoss = value
+			end
+		end,
+	})
+	
+	local autoHakiButton 
+	autoHakiButton = AutoFarms.Toggle({
+		Text = "Buso Haki Auto-Farm",
+		Callback = function(value)
+			if value and not player:WaitForChild("PlayerGui"):WaitForChild("HUD"):WaitForChild("Buso"):WaitForChild("BBar").Visible then
+				
+				autoHakiButton:SetState(false)
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Hydra Hub";
+					Text = "You do not have Haki!";
+					Icon = "rbxassetid://6309112252";
+					Duration = 3;
+					})
+			end
+			scriptFunctions["Auto Buso"][1] = value
+			if value then
+				scriptFunctions["Auto Buso"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	local intelligentBuso
+	intelligentBuso = AutoFarms.Toggle({
+		Text = "Big Brain Buso",
+		Callback = function(value)
+			smartBuso = value
+		end,
+		Enabled = false
+	})
+	
+	AutoFarms.Toggle({
+		Text = "NPCs",
+		Callback = function(value)
+			scriptFunctions["Auto Npc"][1] = value
+			if value then
+				scriptFunctions["Auto Npc"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	local speedAttack
+	speedAttack = AutoFarms.TextField({
+		Text = "Attack Cooldown (0.01 by default)",
+		Callback = function(value)
+			if tonumber(value) then
+				if tonumber(value) < 0.01 then
+					cooldownValue = 0.01
+					speedAttack:SetText("0.01")
+					Title = "Hydra Hub";
+					Text = "ERROR: Minimum is 0.01";
+					Icon = "rbxassetid://6309112252";
+					Duration = 3;
+				end
+				cooldownValue = value
+			end
+		end
+	})
+	
+	AutoFarms.DataTable({
+		Text = "NPC List",
+		Callback = function(data)
+			for i,v in pairs(data)do
+				npcFarming[i] = v
+			end
+		end,
+		Options = {
+			Bandit = false,
+			["Bandit Boss"] = false,
+			["Desert Bandit"] = false,
+			["Lucid's Lad"] = false,
+			["Lucid's Righthand"] = false,
+			Lucid = false,
+			["Krieg Pirate"] = false,
+			["Zou Inhabitant"] = false,
+			["Corrupt Marine"] = false,
+			["Clown Pirate"] = false,
+			["Monkey"] = false,
+			["Sky District Bandit"] = false,
+			["Castle Guard"] = false,
+			["Sky Guardian"] = false
+		}
+	})
+	
+	Misc.Slider({
+		Text = "Jump Power",
+		Callback = function(value)
+			if (game.Players.LocalPlayer.Character) then
+				game.Players.LocalPlayer.Character.Humanoid.JumpPower = value;
+			end;
+			toggles.jumppower = value;
+		end,
+		Min = 50,
+		Max = 696,
+		Def = 50
+	})
+	
+	Misc.Slider({
+		Text = "Speed",
+		Callback = function(value)
+			if (game.Players.LocalPlayer.Character) then
+				game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value;
+			end;
+			toggles.walkspeed = value;
+		end,
+		Min = 16,
+		Max = 160,
+		Def = 30
+	})
+	
+	AutoFarms.Toggle({
+		Text = "Bosses",
+		Callback = function(value)
+			if value and #players:GetChildren() > 1 then
+				Title = "Hydra Hub";
+				Text = "You need to be alone in the server in order for this to work!";
+				Icon = "rbxassetid://6309112252";
+				Duration = 3;
+			end
+			scriptFunctions["Auto Boss"][1] = value
+			if value then
+				
+				scriptFunctions["Auto Boss"][2]()
+			end
+		end,
+		Enabled = false
+	})
+	
+	AutoFarms.Dropdown({
+		Text = "Boss List",
+		Callback = function(data)
+			bossFarming = data
+		end,
+		Options = {""}
+	})
+	
+	AutoFarms.Toggle({
+		Text = "Auto-Quest (WIP)",
+		Callback = function(value)
+			scriptFunctions["Auto-Quest (WIP)"][1] = value
+		end,
+		Enabled = false
+	})
+	
+	AutoFarms.Dropdown({
+		Text = "Select Quest",
+		Callback = function(value)
+			questDoing[1] = value
+		end,
+		Options = {"Bandits","Bandit Boss","Desert Bandits","Lucid","Krieg Pirates","Corrupt Marines","Zou Inhabitants","Clown Pirate","Sky district bandits","Castle Guards","Sky Guardians"}
+	})
+	
+	MSF.Slider({
+		Text = "Moving speed",
+		Callback = function(value)
+			speedMarineShip = value
+		end,
+		Min = 30,
+		Max = 160,
+		Def = 30
+	})
+	
+	MSF.Slider({
+		Text = "Marine Distance",
+		Callback = function(value)
+			marineFarmDistance = value
+		end,
+		Min = 1000,
+		Max = 4000,
+		Def = 1000
+	})
+	
+	local backToShipButton
+	backToShipButton = MSF.Toggle({
+		Text = "Lock Ship Position (for overnight farming)",
+		Callback = function(value)
+			if value then
+				if respawnShip == nil then
+					backToShipButton:SetState(false)
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "Hydra Hub";
+						Text = "You need to set a ship respawn location first!";
+						Icon = "rbxassetid://6309112252";
+						Duration = 5;
+						})
+				end
+			end
+			backToShip = value
+		end,
+		Enabled = false
+		
+	})
+	
+	MSF.Toggle({
+		Text = "Start Ship AutoFarm!",
+		Callback = function(value)
+			scriptFunctions["Start Ship AutoFarm!"][1] = value
+			if value then
+				if not ships:FindFirstChild(player.Name.."Ship")then
+					EventShip:InvokeServer()
+				end
+				scriptFunctions["Start Ship AutoFarm!"][2]()
+			else
+				respawnShip = nil
+				if autoFarmButton then
+					autoFarmButton:SetText("Respawn ship Position")
+				end	
+			end
+		end,
+		Enabled = false
+	})
+	
+	autoFarmButton = MSF.Button({
+		Text = "Respawn ship Position",
+		Callback = function()
+			respawnShip = player.Character:WaitForChild("HumanoidRootPart").CFrame
+			autoFarmButton:SetText(tostring(player.Character:WaitForChild("HumanoidRootPart").Position))
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Slider({
+		Text = "Moving Speed",
+		Callback = function(value)
+			speedIslandTp = value
+		end,
+		Min = 100,
+		Max = 160,
+		Def = 100
+	})
+	
+	IslandTp.Button({
+		Text = "Beginner Island",
+		Callback = function()
+			teleportFunction(islands["Town of Beginnings"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Shell's Town",
+		Callback = function()
+			teleportFunction(islands["Shell's Town"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Traders Island",
+		Callback = function()
+			teleportFunction(islands["Trader's Island"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Gravito's Lair",
+		Callback = function()
+			teleportFunction(islands["Gravito's Lair"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Fishman Island",
+		Callback = function()
+			wait(1)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5638.51611, -93.9250031, -16611.334)
+			wait(1)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5638.51611, -93.9250031, -16611.334)
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Orange Town",
+		Callback = function()
+			teleportFunction(islands["Orange Town"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Zou Island",
+		Callback = function()
+			teleportFunction(islands["Island Of Zou"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "The Colosseum",
+		Callback = function()
+			teleportFunction(islands["Colosseum"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Arlong Park",
+		Callback = function()
+			teleportFunction(islands["Arlong Park"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Sandora",
+		Callback = function()
+			teleportFunction(islands["Sandora"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Sphinx Island",
+		Callback = function()
+			teleportFunction(islands["Sphinx Island"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Roku Island",
+		Callback = function()
+			teleportFunction(islands["Mysterious Cliff"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Sky Island",
+		Callback = function()
+			teleportFunction(islands["Sky island"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Roca Island",
+		Callback = function()
+			teleportFunction(islands["Roca Island"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Yeti Island",
+		Callback = function()
+			teleportFunction(islands["Kori Island"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Marine Fort",
+		Callback = function()
+			teleportFunction(islands["Marine Fort F-1"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	
+	IslandTp.Button({
+		Text = "Island Restaurant",
+		Callback = function()
+			teleportFunction(islands["Restaurant Baratie"])
+		end,
+		Menu = {
+			Information = function(self)
+				
+			end
+		}	
+	})
+	end
