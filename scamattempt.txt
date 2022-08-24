@@ -1,0 +1,9 @@
+https://cdn.discordapp.com/attachments/929544990990958673/1012119126354972762/unknown.png
+https://cdn.discordapp.com/attachments/929544990990958673/1012119126883434566/vouch.png
+https://cdn.discordapp.com/attachments/929544990990958673/1012119127319650335/Screenshot_623.png
+https://cdn.discordapp.com/attachments/929544990990958673/1012119127772631110/Screenshot_624.png
+https://cdn.discordapp.com/attachments/929544990990958673/1012119128296931328/Screenshot_625.png
+https://cdn.discordapp.com/attachments/929544990990958673/1012119128905093280/Screenshot_626.png
+eth addresses:
+real: https://www.blockchain.com/eth/address/0x0DAE07538fFE8Af8B6eBEb9d90587a0aC0D80c38
+testnet address: https://kovan.etherscan.io/address/0x0DAE07538fFE8Af8B6eBEb9d90587a0aC0D80c38
