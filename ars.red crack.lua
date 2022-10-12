@@ -55,63 +55,34 @@ local a="6NNYUEXAR2"local b=0;local c= getfenv()local d;local function e()b=b+1;
         {"Credits", 2}
     }}
 }do for a,a in ipairs(b)do local b= d:AddTab(a[1])for d,d in ipairs(a[2])do if not c[a[1].."_col_"..d[2] ]then c[a[1].."_col_"..d[2] ]= b:AddColumn()end;c[a[1].."_"..d[1] ]= c[a[1].."_col_"..d[2] ]:AddSection(d[1])end end;do Aimbot_Aimbot:AddToggle({text = "Enabled", flag = ""}):AddBind({flag = ""})Aimbot_Aimbot:AddList({text = "FOV Calculation", values = {"Static"}, value = "Static", callback = function(a)
-            
         end})Aimbot_Aimbot:AddList({text = "Hitbox Priority", values = {"Head"}, value = "Head", callback = function(a)
-            
         end})Aimbot_Aimbot:AddToggle{text = "Smoothing", flag = ""}:AddSlider{flag = "", min = 1, max = 5, value = 1}Aimbot_Aimbot:AddSlider{text="Aimbot Distance", flag = "", min = 0, max = 5000, value = 1000}c["Aimbot_Silent Aim"]:AddToggle{text = "Enabled", flag = ""}:AddBind({flag = ""})c["Aimbot_Silent Aim"]:AddList({text = "Target Hitbox", values = {"Head"}, value = "Head", callback = function(a)
-            
         end})c["Aimbot_Silent Aim"]:AddSlider{text = "Hit Chance %", suffix = "%", flag = "", min = 0, max = 100, value = 100}c["Aimbot_Silent Aim"]:AddToggle{text = "Silent FOV", flag = ""}:AddSlider{text = "Silent FOV", flag = "", min = 0, max = 750, value = 20}:AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})Aimbot_FOV:AddToggle{text = "Enabled", flag = ""}:AddBind({flag = ""})Aimbot_FOV:AddToggle{text = "Aimbot FOV", flag = ""}:AddSlider{text = "FOV", flag = "", min = 0, max = 750, value = 100}:AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 0, 0), callback = function(a)
-            
         end})local b= Aimbot_FOV:AddToggle({text = "Deadzone FOV", flag = ""}):AddSlider{text = "Deadzone FOV", flag = "", min = 0, max = 750, value = 30}:AddColor({text = "Draw Target Name", flag = "", color = Color3.new(0, 0, 0), callback = function(a)
-            
         end})Aimbot_FOV:AddToggle{text = "Draw Target Name FOV", flag = ""}:AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text = "Enabled", flag = ""}):AddBind({flag = ""})c["Visuals_Player ESP"]:AddToggle({text = "Names", flag = ""}):AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text = "Boxes", flag = ""}):AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end}):AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text = "Health Bar", flag = ""}):AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 0, 0), callback = function(a)
-            
         end}):AddColor({text = "Draw Target Name", flag = "", color = Color3.new(0, 1, 0), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text = "Health Text", flag = ""}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text = "Health Bar Boost", flag = ""})c["Visuals_Player ESP"]:AddToggle({text =  "Hold Item", flag = ""}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text =  "Out Of View", flag = ""}):AddSlider{text = "Radius", flag = "", min = 0, max = 1000, value = 100}:AddColor({text = "Draw Target Name", flag = "", color = Color3.new(1, 0, 0), callback = function(a)
-            
         end}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Player ESP"]:AddToggle({text =  "Distance", flag = ""}):AddSlider{text = "Max Distance", flag = "", min = 0, max = 5000, value = 1000}:AddColor({flag = "", color = Color3.new(1, 0, 0), callback = function(a)
-            
         end}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_ESP Settings"]:AddSlider{text = "Max HP Visiblity", flag = "", min = 0, max = 100, value = 90}c["Visuals_ESP Settings"]:AddList({text = "Text Casing",  values = {"Normal"}, value = "Normal", callback = function(a)
-            
         end})c["Visuals_ESP Settings"]:AddList({text = "Measurement Unit", values = {"Meters"}, value = "Meters", callback = function(a)
-            
         end})c["Visuals_ESP Settings"]:AddToggle({text =  "Aimbot Target", flag = ""}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_ESP Settings"]:AddToggle({text =  "Map Radar", flag = ""}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Vehicle ESP"]:AddToggle({text = "Enabled", flag = ""}):AddBind({flag = ""})c["Visuals_Vehicle ESP"]:AddToggle({text = "Vehicle Name", flag = ""}):AddColor({flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Vehicle ESP"]:AddToggle({text = "Distance", flag = ""}):AddSlider{text = "Max Distance", flag = "", min = 0, max = 5000, value = 1500}c["Visuals_Item ESP"]:AddToggle({text = "Enabled", flag = ""}):AddList({multiselect = true, values = {"Ammo", "Accessory", "Attachment", "Backpack", "Belt", "Clothing", "Consumable", "Firearm", "FuelCan", "Hat", "Medical", "Melee", "RepairTool", "Vest"}, value = "", callback = function(a)
-            
         end}):AddBind({flag = ""})c["Visuals_Item ESP"]:AddToggle({text = "Item Name", flag = ""})c["Visuals_Item ESP"]:AddToggle({text = "Distance", flag = ""}):AddSlider{text = "Max Distance", flag = "", min = 0, max = 600, value = 150}c["Visuals_Item ESP"]:AddToggle({text = "Item Type", flag = ""})c["Visuals_Item ESP"]:AddColor({text = "Ammo", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Item ESP"]:AddColor({text = "Accessory", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Item ESP"]:AddColor({text = "Attachment", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Item ESP"]:AddColor({text = "Backpack", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Item ESP"]:AddColor({text = "Belt", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
-            
         end})c["Visuals_Item ESP"]:AddColor({text = "Clothing", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
         end})c["Visuals_Item ESP"]:AddColor({text = "Consumable", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
         end})c["Visuals_Item ESP"]:AddColor({text = "Firearm", flag = "", color = Color3.new(1, 1, 1), callback = function(a)
