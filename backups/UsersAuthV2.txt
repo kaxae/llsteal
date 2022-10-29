@@ -1,0 +1,17 @@
+Users = {
+    User1v3 = {
+        UID = 1,
+        Name = "Mastadawn",
+        WL1 = "62aa8bc970c2fe574bb892743f7661c454cb553eab51bb2c4fae1c78de8b58ebfeb5a3e1ceafc0b770d0b07411dab484f9686d473cbb9f5b7a2eaff316dfc2ef",
+        WL2 = "5e6c540dd23bf07fb8064d9da39954442e3c778b861237e10a096715971f872364217ed480324ac9e1331b0097d742fbb79e977967bc801c865761d894692725",
+        WL3 = "6a0bbe3c7307a4f098309a892e5158684d83a3b6283bad949caae6ae4a3862745fc564be01c4bd906d1367d6fad9c6b1e9aa27f4e2fa90e7eed6b0389f864fd1",
+    },
+    User1v2 = {
+        UID = 1,
+        Name = "Mastadawn",
+        WL1 = "d18f9fad285699fc89f7be72396b37ad23c0d3cd5f1dfa52a4e0afafdc3313faccdb4c3b8ff5eb20eb7fe0e3bf9199fb3e2f3897c61903647ae2cdcad1b02293",
+        WL2 = "55b806e51dd4623dc17b6f4bc7aa45b57051b5e5794fb1c71bb3da555519cb55cfbe49ab119ef4ace415a8c1e73b5183e03b5f3ebdeffe3dabbec80f1ff2cd73",
+        WL3 = "6a0bbe3c7307a4f098309a892e5158684d83a3b6283bad949caae6ae4a3862745fc564be01c4bd906d1367d6fad9c6b1e9aa27f4e2fa90e7eed6b0389f864fd1",
+    },
+}
+return Users
